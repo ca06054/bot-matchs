@@ -1,0 +1,23 @@
+{
+  "name": "bot-matchs-ww",
+  "version": "1.0.0",
+  "description": "bot matchs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "crear-db": "node crear_db.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "googleapis": "^134.0.0",
+    "moment": "^2.30.1",
+    "node-cache": "^5.1.2",
+    "puppeteer": "^22.7.1",
+    "qrcode-terminal": "^0.12.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1",
+    "whatsapp-web.js": "^1.23.0"
+  }
+}
