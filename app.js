@@ -34,9 +34,9 @@ client.on('message', async message => {
         if(!descripcion) return;
         try {
             const partido = await insertPartido(descripcion);
-            client.sendMessage(from, `🎉 Inicia la convocatoria para el partido del ${descripcion}`);
+            client.sendMessage(from, `🎉 Inicia la convocatoria para el partido del ${descripcion} 🎉`);
         } catch (error) {
-            client.sendMessage(from, 'Error al insertar partido:' + error);
+            client.sendMessage(from, '❌ Error al insertar partido:' + error);
         }
     } else if (message.body.startsWith('/voy')) {
         try {
@@ -47,7 +47,7 @@ client.on('message', async message => {
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
             client.sendMessage(from, listarAsistentesConNumeros(asistentes));
         } catch (error) {
-            client.sendMessage(from, 'Error al agregar asistente:'+error);
+            client.sendMessage(from, 'Error al agregar asistente: '+error);
         }
     } if (body.startsWith('/invitar')) {
         const descripcion = message.body.slice(8).trim();
@@ -58,7 +58,7 @@ client.on('message', async message => {
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
             client.sendMessage(from, listarAsistentesConNumeros(asistentes));
         } catch (error) {
-            client.sendMessage(from, 'Error al agregar asistente:'+error);
+            client.sendMessage(from, '❌ Error al agregar asistente: '+error);
         }
     } else if (message.body.startsWith('/baja')) {
         const id = message.body.slice(6).trim();
@@ -71,7 +71,7 @@ client.on('message', async message => {
             asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
             client.sendMessage(from, listarAsistentesConNumeros(asistentes));
         } catch (error) {
-            client.sendMessage(from, 'Error al dar de baja asistente:'+error);
+            client.sendMessage(from, '❌ Error al dar de baja asistente: '+error);
         } 
     } else if (message.body === '/listar') {
         try {
@@ -80,16 +80,16 @@ client.on('message', async message => {
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
             client.sendMessage(from, listarAsistentesConNumeros(asistentes));
         } catch (error) {
-            client.sendMessage(from, 'Error al listar asistentes:'+error);
+            client.sendMessage(from, '❌ Error al listar asistentes: '+error);
         }
       
     }
 });
 
 
- function listarAsistentesConNumeros(asistentes) {
+ function listarAsistentesConNumeros(asistentes,partido) {
     return asistentes && asistentes.length > 0
-      ? 'Asistentes: ' + asistentes.map((asistente, index) => `${index + 1}. ${asistente.descripcion}`).join(",\n")
+      ? '📋 Asistentes del '+partido.descripcion +':\n' + asistentes.map((asistente, index) => `${index + 1}. ${asistente.descripcion}`).join("\n")
       : "No hay asistentes para este partido.";
   }
   
