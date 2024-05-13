@@ -43,9 +43,9 @@ client.on('message', async message => {
             const ultimoPartido = await getLastPartido();
             console.log(JSON.stringify(ultimoPartido));
             
-            const asistente = await insertAsistente(contact.number, contact.name, ultimoPartido.id);
+            const asistente = await insertAsistente(contact.number, contact.pushname, ultimoPartido.id);
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
-            client.sendMessage(from, listarAsistentesConNumeros(asistentes));
+            client.sendMessage(from, listarAsistentesConNumeros(asistentes,ultimoPartido.descripcion));
         } catch (error) {
             client.sendMessage(from, 'Error al agregar asistente: '+error);
         }
@@ -56,7 +56,7 @@ client.on('message', async message => {
             const ultimoPartido = await getLastPartido();
             const asistente = await insertAsistente(contact.number, descripcion, ultimoPartido.id);
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
-            client.sendMessage(from, listarAsistentesConNumeros(asistentes));
+            client.sendMessage(from, listarAsistentesConNumeros(asistentes,ultimoPartido.descripcion));
         } catch (error) {
             client.sendMessage(from, '❌ Error al agregar asistente: '+error);
         }
@@ -69,16 +69,17 @@ client.on('message', async message => {
             const asistente=asistentes[id-1];
             const resultadoEliminacion = await deleteAsistenteById(asistente.id); 
             asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
-            client.sendMessage(from, listarAsistentesConNumeros(asistentes));
+            client.sendMessage(from, listarAsistentesConNumeros(asistentes,ultimoPartido.descripcion));
         } catch (error) {
             client.sendMessage(from, '❌ Error al dar de baja asistente: '+error);
         } 
     } else if (message.body === '/listar') {
         try {
             const ultimoPartido = await getLastPartido();
+            console.log(JSON.stringify(ultimoPartido));
             if(!ultimoPartido) return;
             const asistentes = await getAsistentesByPartidoId(ultimoPartido.id);
-            client.sendMessage(from, listarAsistentesConNumeros(asistentes));
+            client.sendMessage(from, listarAsistentesConNumeros(asistentes,ultimoPartido.descripcion));
         } catch (error) {
             client.sendMessage(from, '❌ Error al listar asistentes: '+error);
         }
@@ -89,7 +90,7 @@ client.on('message', async message => {
 
  function listarAsistentesConNumeros(asistentes,partido) {
     return asistentes && asistentes.length > 0
-      ? '📋 Asistentes del '+partido.descripcion +':\n' + asistentes.map((asistente, index) => `${index + 1}. ${asistente.descripcion}`).join("\n")
+      ? '📋 Asistentes del '+partido +':\n' + asistentes.map((asistente, index) => `${index + 1}. ${asistente.descripcion}`).join("\n")
       : "No hay asistentes para este partido.";
   }
   
